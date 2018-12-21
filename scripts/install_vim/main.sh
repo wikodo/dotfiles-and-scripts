@@ -1,9 +1,16 @@
 #! /usr/bin/env bash
 # https://github.com/Karmenzind/
 
+sudo apt-get -y install vim-gtk git cmake libncurses5-dev libgnome2-dev libgnomeui-dev libgtk2.0-dev \
+    libatk1.0-dev libbonoboui2-dev libcairo2-dev libx11-dev libxpm-dev libxt-dev python-dev python3-dev \
+    llvm-3.9 clang-3.9 libclang-3.9-dev libboost-all-dev ruby-dev lua5.1 liblua5.1-dev libperl-dev \
+    ruby-dev lua5.1 liblua5.1-dev libperl-dev ctags
+
 no_root
 
-sudo pacman -S gvim --needed 
+(which pacman > /dev/null) && is_arch=true || is_arch=false
+if ($is_arch); then
+    sudo pacman -S gvim --needed 
 
 # --------------------------------------------
 # colors
@@ -17,8 +24,8 @@ colors_url=('https://raw.githubusercontent.com/tomasr/molokai/master/colors/molo
 mkdir -p $color_dir
 for u in ${colors_url[*]}
 do
-    fname="$color_dir/`echo $colors_url | sed 's/.*\///g'`"
-    [[ ! -e $fname ]] && axel $u -o $color_dir
+    fname="$color_dir/`basename $u`"
+    [[ ! -e $fname ]] && wget -P $color_dir $u
 done
 
 # --------------------------------------------
